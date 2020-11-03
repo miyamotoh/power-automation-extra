@@ -5,6 +5,8 @@
 # $2=cluster domain; eg. test.redhat.com
 # $3=gateway address into the cluster; eg. bastion node's address, 192.168.126.1
 
+WAIT=10
+
 CNETWK=$1
 if [ -z "$CNETWK" ]; then
     echo "ERROR: no libvirt cluster network specified -- aborting..."
@@ -78,7 +80,8 @@ if [ $? -ne 0 ]; then
     # ------------------------------------------------------------
     echo "INFO: adding new rule to host dnsmasq..."
     #
-    echo "server=/$CDOMAIN/$TOPADDR\naddress/.$CDOMAIN/$TOPADDR" > $DNSMASQD/$CNETWK.conf
+    echo "server=/$CDOMAIN/$TOPADDR"   > $DNSMASQD/$CNETWK.conf
+    echo "address=/.$CDOMAIN/$TOPADDR" >> $DNSMASQD/$CNETWK.conf
 
     # ------------------------------------------------------------
     echo "INFO: restarting NetworkManager..."
